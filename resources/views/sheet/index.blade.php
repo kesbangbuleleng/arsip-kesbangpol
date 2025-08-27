@@ -1,27 +1,40 @@
-<x-layout>
-<h2 class="mb-4">📊 Data dari Google Spreadsheet</h2>
-        <div class="card shadow rounded-3">
-            <a href="{{route('sheet.add')}}" class="text-primary">Add</a>
+<x-admin.layout>
+    <div class="row">
+        <div class="card mb-4">
+            <h5 class="card-header text-center">Data Arsip</h5>
             <div class="card-body">
-                <table class="table table-bordered table-striped">
-                    <thead class="table-dark">
-                        <tr>
-                            @foreach($rows[0] as $header)
-                                <th>{{ $header }}</th>
-                            @endforeach
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach(array_slice($rows, 1) as $row)
+                <div class="table-responsive">
+                    <table class="table-striped" id="arsipTable">
+                        <thead>
                             <tr>
-                                @foreach($row as $cell)
-                                    <td>{{ $cell }}</td>
+                                @foreach($rows[0] as $header)
+                                <th style="font-size: small;">{{ $header }}</th>
                                 @endforeach
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @forelse(array_slice($rows, 1) as $row)
+                            <tr>
+                                @foreach($row as $cell)
+                                <td style="font-size: small;">{{ $cell }}</td>
+                                @endforeach
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="13" class="text-center">Tidak ada data Arsip!</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-</x-layout>
-        
+    </div>
+    @push('script')
+    <script>
+        $(document).ready(function() {
+            $('#arsipTable').DataTable();
+        });
+    </script>
+    @endpush
+</x-admin.layout>

@@ -15,27 +15,28 @@ class GoogleSheetController extends Controller
         $this->sheet = $sheet;
     }
 
-   public function index()
-{
-    $rows = $this->sheet->readSheet();
-    return view('sheet.index', compact('rows'));
-}
+    public function index()
+    {
+        $rows = $this->sheet->readSheet();
 
-  public function store(Request $request)
-{
-    $kategori_arsip = $request->kategori_arsip;
-    $kode_klasifikasi = $request->kode_klasifikasi;
-    $uraian_informasi_arsip = $request->uraian_informasi_arsip;
-    $kurun_waktu = $request->kurun_waktu;
-    $tanggal_arsip = $request->tanggal_arsip;
-    $jumlah = $request->jumlah;
-    $keterangan = $request->keterangan;
-    $unggah_file_arsip = $request->unggah_file_arsip;
-    $prefix = "ARS-KESBANGPOL-";
-    $unique = Str::random(12);
-    $code = $prefix.$unique;
+        return view('sheet.index', compact('rows'));
+    }
 
-    $this->sheet->appendRow('Form_Responses 1!A1:K', [
+    public function store(Request $request)
+    {
+        $kategori_arsip = $request->kategori_arsip;
+        $kode_klasifikasi = $request->kode_klasifikasi;
+        $uraian_informasi_arsip = $request->uraian_informasi_arsip;
+        $kurun_waktu = $request->kurun_waktu;
+        $tanggal_arsip = $request->tanggal_arsip;
+        $jumlah = $request->jumlah;
+        $keterangan = $request->keterangan;
+        $unggah_file_arsip = $request->unggah_file_arsip;
+        $prefix = "ARS-KESBANGPOL-";
+        $unique = Str::random(12);
+        $code = $prefix . $unique;
+
+        $this->sheet->appendRow('Form_Responses 1!A1:K', [
             date('m/d/Y'),
             $code,
             $kategori_arsip,
@@ -49,11 +50,11 @@ class GoogleSheetController extends Controller
         ]);
 
         return response()->json(['status' => 'Row Added']);
-}
+    }
 
     public function add()
     {
-       return view('sheet.create');
+        return view('sheet.create');
     }
 
     public function simpan()
