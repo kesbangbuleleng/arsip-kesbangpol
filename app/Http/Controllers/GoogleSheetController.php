@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\GoogleSheetService;
+use App\Services\GoogleDriveService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -21,7 +22,11 @@ class GoogleSheetController extends Controller
     return view('sheet.index', compact('rows'));
 }
 
-  public function store(Request $request)
+    public function uploadFile(){
+
+    }
+
+  public function store(Request $request, GoogleDriveService $drive)
 {
     $kategori_arsip = $request->kategori_arsip;
     $kode_klasifikasi = $request->kode_klasifikasi;
@@ -30,10 +35,22 @@ class GoogleSheetController extends Controller
     $tanggal_arsip = $request->tanggal_arsip;
     $jumlah = $request->jumlah;
     $keterangan = $request->keterangan;
-    $unggah_file_arsip = $request->unggah_file_arsip;
     $prefix = "ARS-KESBANGPOL-";
     $unique = Str::random(12);
     $code = $prefix.$unique;
+
+   
+
+   if ($request->hasFile('unggah_file_arsip')) {
+        $file = $request->file('unggah_file_arsip');
+        $uploadedFile = $drive->uploadFile(
+            $file->getPathname(),
+            $file->getClientOriginalName(),
+            $file->getMimeType()
+        );
+
+        $linkDrive = $uploadedFile->webViewLink; 
+    }
 
     $this->sheet->appendRow('Form_Responses 1!A1:K', [
             date('m/d/Y'),
@@ -45,7 +62,7 @@ class GoogleSheetController extends Controller
             $tanggal_arsip,
             $jumlah,
             $keterangan,
-            $unggah_file_arsip
+            $linkDrive ?? ''
         ]);
 
         return response()->json(['status' => 'Row Added']);

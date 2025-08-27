@@ -1,5 +1,5 @@
 <x-layout>
-<form action="{{route('sheet.store')}}" method="post">
+<form action="{{route('sheet.store')}}" method="post" enctype="multipart/form-data">
   @csrf()
   <div class="mb-3">
     <div class="row">
@@ -59,7 +59,7 @@
         </div>
         <div class="col-md-4">
             <label for="unggah_file_arsip" class="form-label">Unggah File Arsip</label>
-                <input type="text" class="form-control" name="unggah_file_arsip" id="unggah_file_arsip" aria-describedby="">
+                <input type="file" class="form-control" name="unggah_file_arsip" id="unggah_file_arsip" aria-describedby="">
                 <div id="" class="form-text">
                    
                 </div>
